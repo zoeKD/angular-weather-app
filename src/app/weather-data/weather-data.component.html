@@ -1,4 +1,22 @@
-<p>
-  weather-data works!
-  {{title}}
-</p>
+<form class="example-form">
+  <div>
+    <mat-form-field class="example-full-width">
+      <input type="text" (change)="somethingChanged()" [(ngModel)]="city" placeholder="Enter a city" aria-label="Number" matInput [formControl]="searchCity" [matAutocomplete]="auto" required>
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let item of searchResult" [value]="item">
+          {{ item }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
+  <div>
+  <label>Date:
+    <input (change)="somethingChanged()" name="city" type="date" [(ngModel)]="date" value="{{ today }}" max="{{ today }}" required>
+    <p>{{error}}</p>
+  </label>
+</div>
+
+</form>
+
+
+<app-weather-result *ngIf="data" [data]="data"></app-weather-result>
