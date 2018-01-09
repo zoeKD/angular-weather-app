@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from "@angular/http";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatAutocompleteModule, MatInputModule } from '@angular/material';
+import { D3, D3Service } from 'd3-ng2-service';
 
 
 import { AppComponent } from './app.component';
@@ -27,7 +28,9 @@ import { ApiService } from './api.service';
     FormsModule,
     HttpModule
   ],
-  providers: [ApiService],
+  providers: [ApiService,
+    D3Service
+   ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

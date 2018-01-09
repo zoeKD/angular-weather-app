@@ -1,4 +1,4 @@
-<form class="example-form">
+<form class="example-form" (ngSubmit)="onSubmit()">
   <div>
     <mat-form-field class="example-full-width">
       <input type="text" (change)="somethingChanged()" [(ngModel)]="city" placeholder="Enter a city" aria-label="Number" matInput [formControl]="searchCity" [matAutocomplete]="auto" required>
@@ -15,8 +15,8 @@
     <p>{{error}}</p>
   </label>
 </div>
-
+<input type="submit" value="Let's check the temperature">
 </form>
 
 
-<app-weather-result *ngIf="data" [data]="data"></app-weather-result>
+<app-weather-result *ngIf="data" [data]="data" [city]="city" [date]="date"></app-weather-result>

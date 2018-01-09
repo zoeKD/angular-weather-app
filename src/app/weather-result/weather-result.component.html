@@ -1,5 +1,7 @@
-<ul>
-  <li *ngFor="let observation of data">
-    {{observation.tempm}}°C à {{observation.date.hour}}h{{observation.date.min}} GMT
-  </li>
-</ul>
+  <!-- <ul>
+    <li *ngFor="let observation of data">
+      {{observation.tempm}}°C à {{observation.date.hour}}h{{observation.date.min}} GMT
+    </li>
+  </ul> -->
+<p>Evolution of temperature in {{ city }} on {{ date | date }}</p>
+<svg width="800" height="400"></svg>

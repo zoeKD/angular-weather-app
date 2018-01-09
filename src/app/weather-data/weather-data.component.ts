@@ -3,6 +3,7 @@ import { ApiService} from '../api.service';
 import { FormControl } from '@angular/forms';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-weather-data',
@@ -10,11 +11,11 @@ import 'rxjs/add/operator/map';
   styleUrls: ['./weather-data.component.css']
 })
 export class WeatherDataComponent implements OnInit {
-  city: String;
-  date: String;
+  city: string;
+  date: string;
   today = Date.now();
   data: any [];
-  error: String;
+  error: string;
   searchCity : FormControl = new FormControl();
   searchResult = [];
 
@@ -29,27 +30,42 @@ export class WeatherDataComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.city = "Paris";
+    this.date = "2018-01-01";
+    this.fetchData(this.city, this.date);
   }
 
   somethingChanged() {
     if(Date.parse(this.date) >= this.today) {
-      this.error = "Please select a date in the past"
+      this.error = "Please select a date in the past";
     }
-    if(this.city != null && this.date != null) {
+    this.service.search_city(this.city).subscribe(response =>{
+                this.searchResult = response;
+            })
+    console.log(this.searchResult.some(result => result.toLowerCase().includes(this.city.toLowerCase() + ",")))
+    if(this.city != null && this.date != null && this.searchResult.some(result => result.toLowerCase().includes(this.city.toLowerCase() + ","))) {
       this.fetchData(this.city, this.date)
+      this.error = "";
     }
   }
 
   onSubmit() {
-    console.log(this.city)
     if(this.city != null && this.date != null) {
-      this.fetchData(this.city, this.date)
+      this.error = "";
+      this.fetchData(this.city, this.date);
     }
   }
 
   fetchData(city, date): void {
     this.service.getWeatherData(city, date).subscribe(data => {
-      this.data = data["history"]["observations"];
+      if(data["history"]){
+        this.data = data["history"]["observations"]
+                    .map(item => { return {hour: item.date.hour, min: item.date.min, temp: Number.parseFloat(item.tempm)} });
+        console.log(data);
+      } else {
+        this.data = null;
+        this.error = "Something went wrong";
+      }
     })
   }
 }
