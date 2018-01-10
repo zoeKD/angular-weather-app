@@ -3,8 +3,14 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from "@angular/http";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatAutocompleteModule, MatInputModule } from '@angular/material';
+import { MatAutocompleteModule, MatInputModule, MatNativeDateModule } from '@angular/material';
 import { D3, D3Service } from 'd3-ng2-service';
+import * as d3 from 'd3';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
+import { DatePipe } from '@angular/common';
+
 
 
 import { AppComponent } from './app.component';
@@ -25,11 +31,15 @@ import { ApiService } from './api.service';
     ReactiveFormsModule,
     MatAutocompleteModule,
     BrowserAnimationsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    MatIconModule,
+    MatButtonModule,
   ],
   providers: [ApiService,
-    D3Service
+    D3Service,
    ],
   bootstrap: [AppComponent]
 })

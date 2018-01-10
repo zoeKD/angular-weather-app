@@ -1,22 +1,27 @@
-<form class="example-form" (ngSubmit)="onSubmit()">
+<form class="form-inline" (ngSubmit)="onSubmit()">
   <div>
-    <mat-form-field class="example-full-width">
+    <mat-form-field>
       <input type="text" (change)="somethingChanged()" [(ngModel)]="city" placeholder="Enter a city" aria-label="Number" matInput [formControl]="searchCity" [matAutocomplete]="auto" required>
+      <button class="close-button" mat-button *ngIf="city" matSuffix mat-icon-button aria-label="Clear" (click)="city=''">
+          <mat-icon>close</mat-icon>
+        </button>
       <mat-autocomplete #auto="matAutocomplete">
-        <mat-option *ngFor="let item of searchResult" [value]="item">
+        <mat-option *ngFor="let item of searchResult" [value]="item" (click)="city=item">
           {{ item }}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
   </div>
   <div>
-  <label>Date:
-    <input (change)="somethingChanged()" name="city" type="date" [(ngModel)]="date" value="{{ today }}" max="{{ today }}" required>
-    <p>{{error}}</p>
-  </label>
-</div>
-<input type="submit" value="Let's check the temperature">
+    <mat-form-field>
+      <input matInput [(ngModel)]="date" name="date" [matDatepicker]="picker" placeholder="Choose a date" (ngModelChange)="somethingChanged()" [max]="today" required>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker (change)="somethingChanged()"></mat-datepicker>
+    </mat-form-field>
+  </div>
 </form>
+<p class="error-message">{{error}}</p>
+<img *ngIf="error" src="../assets/oops.png" alt="">
 
 
 <app-weather-result *ngIf="data" [data]="data" [city]="city" [date]="date"></app-weather-result>

@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
+import * as moment from 'moment';
 
 @Injectable()
 export class ApiService {
@@ -21,7 +23,7 @@ export class ApiService {
              .map((response: Response) => {
                  return response.json();
              })
-             // .catch(this.handleError);
+             .catch(this.handleError);
   }
 
   private handleError(error: Response) {
@@ -30,8 +32,8 @@ export class ApiService {
 
   private buildAPI(city, date) {
     const requestedCity = city.includes(",") ?  city.split(",")[0].replace(" ", "_") : city.replace(" ", "_");
-    const requestedDate = date.replace(/\D/g,"");
-
+    let moment = require('moment');
+    const requestedDate = moment(date).format("YYYYMMDD");
     return `http://api.wunderground.com/api/4e5d1c46d03c86f5/history_${requestedDate}/q/FR/${requestedCity}.json`
   }
 }

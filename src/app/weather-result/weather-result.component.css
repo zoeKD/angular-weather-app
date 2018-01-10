@@ -1,11 +1,57 @@
 .bar {
-  fill: steelblue;
+  fill: #0074D9;
 }
 
 .bar:hover {
-  fill: brown;
+  fill: #7FDBFF;
 }
 
 .axis--x path {
   display: none;
 }
+
+.capitalize {
+   text-transform: capitalize;
+}
+
+.weather-result {
+  margin: 20px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.weather-result i {
+  font-size: 32px;
+  margin-bottom: -2px;
+  margin-right: 10px;
+}
+
+.weather-result .rwarm {
+  color: #FF851B;
+}
+
+.weather-result .pwarm {
+  color: #FFDC00;
+}
+
+.weather-result .pcold {
+  color: #7FDBFF;
+}
+
+.weather-result .rcold {
+  color: #AAAAAA;
+}
+
+.graph-title {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.graph-title span {
+  color: #0074D9;;
+}
+
+p {
+  font-family: 'Roboto', sans-serif;
+};

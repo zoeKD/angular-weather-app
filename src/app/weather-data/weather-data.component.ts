@@ -3,7 +3,8 @@ import { ApiService} from '../api.service';
 import { FormControl } from '@angular/forms';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
-import { DatePipe } from '@angular/common';
+import * as moment from 'moment';
+
 
 @Component({
   selector: 'app-weather-data',
@@ -12,7 +13,7 @@ import { DatePipe } from '@angular/common';
 })
 export class WeatherDataComponent implements OnInit {
   city: string;
-  date: string;
+  date = new Date();
   today = Date.now();
   data: any [];
   error: string;
@@ -21,7 +22,7 @@ export class WeatherDataComponent implements OnInit {
 
   constructor(private service: ApiService) {
     this.searchCity.valueChanges
-        .debounceTime(400)
+        .debounceTime(200)
         .subscribe(data => {
             this.service.search_city(data).subscribe(response =>{
                 this.searchResult = response;
@@ -31,26 +32,40 @@ export class WeatherDataComponent implements OnInit {
 
   ngOnInit() {
     this.city = "Paris";
-    this.date = "2018-01-01";
+    this.date = new Date();
     this.fetchData(this.city, this.date);
   }
 
-  somethingChanged() {
-    if(Date.parse(this.date) >= this.today) {
+  checkValidity(){
+    if(Date.parse(this.date) > this.today) {
       this.error = "Please select a date in the past";
+      this.data = null;
+      return false
     }
-    this.service.search_city(this.city).subscribe(response =>{
-                this.searchResult = response;
-            })
-    console.log(this.searchResult.some(result => result.toLowerCase().includes(this.city.toLowerCase() + ",")))
-    if(this.city != null && this.date != null && this.searchResult.some(result => result.toLowerCase().includes(this.city.toLowerCase() + ","))) {
-      this.fetchData(this.city, this.date)
-      this.error = "";
+    if(this.city != null && this.date != null) {
+      return true
+    } else {
+      this.error = "Something went wrong";
+      this.data = null;
     }
   }
 
+  somethingChanged() {
+    const that = this;
+    setTimeout(function(){
+      if(that.checkValidity()) {
+        console.log(that.city)
+        that.fetchData(that.city, that.date)
+        that.error = "";
+        }
+    }, 500)
+  }
+
   onSubmit() {
-    if(this.city != null && this.date != null) {
+    console.log("submit");
+    console.log(this.city);
+    console.log(this.date);
+    if(this.checkValidity()) {
       this.error = "";
       this.fetchData(this.city, this.date);
     }
@@ -61,7 +76,6 @@ export class WeatherDataComponent implements OnInit {
       if(data["history"]){
         this.data = data["history"]["observations"]
                     .map(item => { return {hour: item.date.hour, min: item.date.min, temp: Number.parseFloat(item.tempm)} });
-        console.log(data);
       } else {
         this.data = null;
         this.error = "Something went wrong";
