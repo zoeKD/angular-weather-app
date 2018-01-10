@@ -58,7 +58,7 @@ export class WeatherDataComponent implements OnInit {
         that.fetchData(that.city, that.date)
         that.error = "";
         }
-    }, 500)
+    }, 200)
   }
 
   onSubmit() {
